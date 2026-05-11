@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Translator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="h-screen flex flex-col relative">
+
+  <!-- Navigation Bar -->
+  <header class="w-full flex justify-between items-center px-8 py-6 border-b border-gray-200 bg-paper/80 backdrop-blur-md z-10 sticky top-0">
+    <div class="flex items-center space-x-6">
+      <h1 class="text-2xl font-light tracking-widest text-gray-900">中英文翻譯</h1>
+      <select id="tone-select" class="bg-transparent border border-gray-300 rounded px-3 py-1 text-sm text-gray-600 focus:outline-none focus:border-gray-500 btn-transition">
+        <option value="book">書籍 (Formal & Literary)</option>
+        <option value="video">影片 (Conversational & Engaging)</option>
+        <option value="web">網頁 (Clear & Concise)</option>
+      </select>
+    </div>
+    
+    <div class="flex items-center space-x-4">
+      <button id="export-word-btn" class="px-5 py-2 rounded border border-gray-300 hover:bg-gray-100 text-sm font-medium tracking-wide btn-transition text-gray-700">
+        匯出 Word
+      </button>
+      <button id="settings-btn" class="p-2 rounded-full hover:bg-gray-200 btn-transition text-gray-600" aria-label="Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Area: Split Layout -->
+  <main class="flex-1 flex overflow-hidden">
+    
+    <!-- Left Column: Chinese Input Area -->
+    <section class="w-1/2 h-full p-10 border-r border-gray-200 flex flex-col bg-paper overflow-y-auto scrollbar-hide">
+      <div class="mb-4 flex justify-between items-center text-xs tracking-widest text-gray-400 uppercase">
+        <span>Chinese Input</span>
+        <span id="loading-indicator" class="hidden flex items-center space-x-2 text-indigo-400">
+          <svg class="animate-spin h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Translating...</span>
+        </span>
+      </div>
+      <textarea id="chinese-input" class="flex-1 w-full bg-transparent text-lg leading-relaxed text-gray-800 font-light placeholder-gray-300 resize-none outline-none" placeholder="在此輸入中文內容..."></textarea>
+      <div class="mt-4 flex justify-end">
+        <button id="translate-btn" class="px-8 py-3 bg-gray-900 text-white rounded shadow hover:bg-gray-800 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 btn-transition tracking-widest font-light">
+          Translate
+        </button>
+      </div>
+    </section>
+
+    <!-- Right Column: English Translation Area -->
+    <section class="w-1/2 h-full p-10 flex flex-col bg-white overflow-y-auto scrollbar-hide">
+      <div class="mb-4 text-xs tracking-widest text-gray-400 uppercase">English Translation</div>
+      <div id="translation-output" class="flex-1 text-lg leading-relaxed text-gray-800 font-light whitespace-pre-wrap outline-none" contenteditable="false">
+        <span class="text-gray-300 italic">翻譯結果...</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Settings Modal Overlay -->
+  <div id="settings-modal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out">
+    <div class="bg-white w-full max-w-lg rounded-xl shadow-2xl p-8 transform scale-95 transition-transform duration-300 ease-in-out" id="settings-modal-content">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-medium text-gray-800">Settings</h2>
+        <button id="close-settings-btn" class="text-gray-400 hover:text-gray-600 btn-transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <div class="space-y-6">
+        <!-- API Key Field -->
+        <div>
+          <label for="api-key-input" class="block text-sm font-medium text-gray-700 mb-2">Gemini API Key</label>
+          <input type="password" id="api-key-input" class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all text-sm" placeholder="Enter your API Key" />
+        </div>
+
+        <!-- Glossary CSV URL Field -->
+        <div>
+          <label for="csv-url-input" class="block text-sm font-medium text-gray-700 mb-2">Glossary CSV URL</label>
+          <input type="text" id="csv-url-input" class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all text-sm" placeholder="https://docs.google.com/spreadsheets/d/..." />
+          <p class="mt-2 text-xs text-gray-500">Must be a publicly accessible CSV link.</p>
+        </div>
+      </div>
+
+      <div class="mt-8 flex justify-between items-center">
+        <button id="update-glossary-btn" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium btn-transition flex items-center space-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <span>Update Glossary</span>
+        </button>
+        <button id="save-settings-btn" class="px-6 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 btn-transition text-sm font-medium">
+          Save Settings
+        </button>
+      </div>
+
+      <!-- Status Message inside Modal -->
+      <div id="settings-status" class="mt-4 text-xs font-medium text-center hidden"></div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript Entry -->
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
