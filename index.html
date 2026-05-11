@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Translator</title>
+  <title>AI Translator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -12,19 +12,19 @@
 <body class="h-screen flex flex-col relative">
 
   <!-- Navigation Bar -->
-  <header class="w-full flex justify-between items-center px-8 py-6 border-b border-gray-200 bg-paper/80 backdrop-blur-md z-10 sticky top-0">
-    <div class="flex items-center space-x-6">
-      <h1 class="text-2xl font-light tracking-widest text-gray-900">中英文翻譯</h1>
-      <select id="tone-select" class="bg-transparent border border-gray-300 rounded px-3 py-1 text-sm text-gray-600 focus:outline-none focus:border-gray-500 btn-transition">
+  <header class="w-full flex flex-col sm:flex-row justify-between items-center px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-200 bg-paper/80 backdrop-blur-md z-10 sticky top-0 space-y-4 sm:space-y-0">
+    <div class="flex items-center space-x-4 sm:space-x-6">
+      <h1 class="text-xl sm:text-2xl font-light tracking-widest text-gray-900">中英文翻譯</h1>
+      <select id="tone-select" class="bg-transparent border border-gray-300 rounded px-2 sm:px-3 py-1 text-sm text-gray-600 focus:outline-none focus:border-gray-500 btn-transition">
+        <option value="general" selected>一般 (Standard)</option>
         <option value="book">書籍 (Formal & Literary)</option>
         <option value="video">影片 (Conversational & Engaging)</option>
         <option value="web">網頁 (Clear & Concise)</option>
       </select>
-      
     </div>
     
-    <div class="flex items-center space-x-4">
-      <button id="export-word-btn" class="px-5 py-2 rounded border border-gray-300 hover:bg-gray-100 text-sm font-medium tracking-wide btn-transition text-gray-700">
+    <div class="flex items-center space-x-3 sm:space-x-4">
+      <button id="export-word-btn" class="px-4 sm:px-5 py-1.5 sm:py-2 rounded border border-gray-300 hover:bg-gray-100 text-sm font-medium tracking-wide btn-transition text-gray-700">
         匯出 Word
       </button>
       <button id="settings-btn" class="p-2 rounded-full hover:bg-gray-200 btn-transition text-gray-600" aria-label="Settings">
@@ -37,10 +37,10 @@
   </header>
 
   <!-- Main Content Area: Split Layout -->
-  <main class="flex-1 flex overflow-hidden">
+  <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
     
-    <!-- Left Column: Chinese Input Area -->
-    <section class="w-1/2 h-full p-10 border-r border-gray-200 flex flex-col bg-paper overflow-y-auto scrollbar-hide">
+    <!-- Left/Top Column: Chinese Input Area -->
+    <section class="w-full md:w-1/2 h-1/2 md:h-full p-6 md:p-10 border-b md:border-b-0 md:border-r border-gray-200 flex flex-col bg-paper overflow-y-auto scrollbar-hide">
       <div class="mb-4 flex justify-between items-center text-xs tracking-widest text-gray-400 uppercase">
         <span>Chinese Input</span>
         <span id="loading-indicator" class="hidden flex items-center space-x-2 text-indigo-400">
@@ -51,18 +51,18 @@
           <span>Translating...</span>
         </span>
       </div>
-      <textarea id="chinese-input" class="flex-1 w-full bg-transparent text-lg leading-relaxed text-gray-800 font-light placeholder-gray-300 resize-none outline-none" placeholder="在此輸入中文內容..."></textarea>
+      <textarea id="chinese-input" class="flex-1 w-full bg-transparent text-lg md:text-xl leading-relaxed text-gray-800 font-light placeholder-gray-300 resize-none outline-none" placeholder="在此輸入中文內容..."></textarea>
       <div class="mt-4 flex justify-end">
-        <button id="translate-btn" class="px-8 py-3 bg-gray-900 text-white rounded shadow hover:bg-gray-800 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 btn-transition tracking-widest font-light">
+        <button id="translate-btn" class="px-6 md:px-8 py-2 md:py-3 bg-gray-900 text-white rounded shadow hover:bg-gray-800 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 btn-transition tracking-widest font-light text-sm md:text-base">
           Translate
         </button>
       </div>
     </section>
 
-    <!-- Right Column: English Translation Area -->
-    <section class="w-1/2 h-full p-10 flex flex-col bg-white overflow-y-auto scrollbar-hide">
+    <!-- Right/Bottom Column: English Translation Area -->
+    <section class="w-full md:w-1/2 h-1/2 md:h-full p-6 md:p-10 flex flex-col bg-white overflow-y-auto scrollbar-hide">
       <div class="mb-4 text-xs tracking-widest text-gray-400 uppercase">English Translation</div>
-      <div id="translation-output" class="flex-1 text-lg leading-relaxed text-gray-800 font-light whitespace-pre-wrap outline-none" contenteditable="false">
+      <div id="translation-output" class="flex-1 text-lg md:text-xl leading-relaxed text-gray-800 font-light whitespace-pre-wrap outline-none" contenteditable="false">
         <span class="text-gray-300 italic">翻譯結果...</span>
       </div>
     </section>
@@ -84,12 +84,12 @@
         <!-- API Key Field -->
         <div>
           <label for="api-key-input" class="block text-sm font-medium text-gray-700 mb-2">Gemini API Key</label>
-          <input type="password" id="api-key-input" class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all text-sm" placeholder="Enter your API Key" />
+          <input type="password" id="api-key-input" class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all text-sm" placeholder="Enter your Gemini 1.5 Pro API Key" />
         </div>
 
         <!-- Glossary CSV URL Field -->
         <div>
-          <label for="csv-url-input" class="block text-sm font-medium text-gray-700 mb-2">Glossary CSV URL</label>
+          <label for="csv-url-input" class="block text-sm font-medium text-gray-700 mb-2">Glossary CSV URL (Google Sheets)</label>
           <input type="text" id="csv-url-input" class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all text-sm" placeholder="https://docs.google.com/spreadsheets/d/..." />
           <p class="mt-2 text-xs text-gray-500">Must be a publicly accessible CSV link.</p>
         </div>

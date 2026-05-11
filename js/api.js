@@ -5,6 +5,8 @@ const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-
 
 const getToneInstruction = (tone) => {
   switch (tone) {
+    case 'general':
+      return "Translate naturally and accurately.";
     case 'book':
       return "Use a formal, literary tone suitable for a published book. Ensure elegance and precise phrasing.";
     case 'video':
