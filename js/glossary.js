@@ -13,7 +13,13 @@ export const Glossary = {
     }
     
     try {
-      const response = await fetch(url);
+      const cleanUrl = url.trim();
+      const response = await fetch(cleanUrl, {
+        method: 'GET',
+        mode: 'cors',
+        redirect: 'follow',
+        headers: {} // Ensure no custom headers are sent
+      });
       if (!response.ok) {
         throw new Error(`Failed to fetch CSV: ${response.status} ${response.statusText}`);
       }
