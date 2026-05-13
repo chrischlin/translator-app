@@ -23,15 +23,21 @@ Imagery: Appropriately integrate imagery of mindfulness and nature (e.g., breath
   }
 };
 
-const getGlossaryInstruction = () => {
+const getGlossaryInstruction = (text) => {
   const glossary = Glossary.get();
-  const terms = Object.keys(glossary);
-  if (terms.length === 0) return "";
+  let instruction = "";
+  let hasMatch = false;
   
-  let instruction = "\n\nCRITICAL GLOSSARY INSTRUCTION: You MUST use the following exact translations for the specified terms:\n";
-  for (const [ch, en] of Object.entries(glossary)) {
-    instruction += `- "${ch}" MUST be translated as "${en}"\n`;
+  for (const ch in glossary) {
+    if (text.includes(ch)) {
+      if (!hasMatch) {
+        instruction = "\n\nStrictly adhere to this glossary:\n";
+        hasMatch = true;
+      }
+      instruction += `- ${ch} = ${glossary[ch]}\n`;
+    }
   }
+  
   return instruction;
 };
 
@@ -43,7 +49,7 @@ export const Api = {
     }
 
     const toneInstruction = getToneInstruction(tone);
-    const glossaryInstruction = getGlossaryInstruction();
+    const glossaryInstruction = getGlossaryInstruction(text);
 
     const systemPrompt = `You are a professional, high-quality Japanese minimalist translator. Your task is to translate Chinese text into English.
 ${toneInstruction}${glossaryInstruction}
