@@ -82,6 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Clear translation on input change
+  chineseInput.addEventListener('input', () => {
+    translationOutput.innerHTML = '';
+  });
+
   // Translation Logic
   translateBtn.addEventListener('click', async () => {
     const text = chineseInput.value.trim();
