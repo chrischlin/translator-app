@@ -15,6 +15,11 @@ const getToneInstruction = (tone) => {
       return "Use a clear, concise, and accessible tone suitable for a webpage or blog post. Keep sentences relatively short and easy to read.";
     default:
       return "Translate naturally and accurately.";
+      case 'mindful_card':
+      return `Role: Please translate by mimicking the tone and mindfulness philosophy of Thich Nhat Hanh.
+Tone: The text must be concise, gentle, and full of compassion and wisdom. Speak softly as if talking to a friend, bringing inner peace and tranquility.
+Strategy: Do not just provide a rigid literal translation. Grasp the core meaning of the original text and transform it into a healing, mindful quote.
+Imagery: Appropriately integrate imagery of mindfulness and nature (e.g., breathing, smiling, water, falling leaves, footsteps, the present moment) so the translation reads like a relaxing 'mindful card' that encourages a deep breath.`;
   }
 };
 
