@@ -12,30 +12,42 @@
 <body class="h-screen flex flex-col relative">
 
   <!-- Navigation Bar -->
-  <header class="w-full flex flex-col sm:flex-row sm:justify-between px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-200 bg-paper/80 backdrop-blur-md z-10 sticky top-0 space-y-4 sm:space-y-0">
-  <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 w-full sm:w-auto">
-    <h1 class="text-xl sm:text-2xl font-bold tracking-widest text-gray-900 text-center sm:text-left w-full sm:w-auto">AI中英文翻譯</h1>
-    <div class="flex items-center space-x-2 mx-auto sm:mx-0">
-      <label for="tone-select" class="text-sm font-medium text-gray-600 tracking-wide whitespace-nowrap">風格選擇：</label>
-      <select id="tone-select" class="bg-transparent border border-gray-300 rounded px-2 sm:px-3 py-1 text-sm text-gray-600 focus:outline-none focus:border-gray-500 btn-transition w-auto">
-        <option value="general" selected>一般</option>
-        <option value="book">書籍</option>
-        <option value="video">影片</option>
-        <option value="web">網頁</option>
-        <option value="mindful_card">心靈小卡</option>
-      </select>
-    </div>
-  </div>
+  <header class="w-full flex flex-col gap-4 px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-200 bg-paper/80 backdrop-blur-md z-10 sticky top-0">
     
-    <div class="flex justify-center items-center space-x-3 sm:space-x-4 w-full sm:w-auto">
+    <!-- Row 1: Title and Icons -->
+    <div class="flex justify-between items-center w-full">
+      <h1 class="text-xl sm:text-2xl font-bold tracking-widest text-gray-900">AI中英文翻譯</h1>
+      
+      <div class="flex items-center gap-4">
+        <button id="tone-info-btn" class="p-2 rounded-full hover:bg-gray-200 btn-transition text-gray-600" aria-label="Tone Info">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </button>
+        <button id="settings-btn" class="p-2 rounded-full hover:bg-gray-200 btn-transition text-gray-600" aria-label="Settings">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Row 2: Controls -->
+    <div class="flex justify-between items-center w-full">
+      <div class="flex items-center space-x-2">
+        <label for="tone-select" class="text-sm font-medium text-gray-600 tracking-wide whitespace-nowrap">風格選擇：</label>
+        <select id="tone-select" class="bg-transparent border border-gray-300 rounded px-2 sm:px-3 py-1 text-sm text-gray-600 focus:outline-none focus:border-gray-500 btn-transition w-auto">
+          <option value="general" selected>一般</option>
+          <option value="book">書籍</option>
+          <option value="video">影片</option>
+          <option value="web">網頁</option>
+          <option value="mindful_card">心靈小卡</option>
+        </select>
+      </div>
+
       <button id="export-word-btn" class="px-4 sm:px-5 py-1.5 sm:py-2 rounded border border-gray-300 hover:bg-gray-100 text-sm font-medium tracking-wide btn-transition text-gray-700">
         匯出 Word
-      </button>
-      <button id="settings-btn" class="p-2 rounded-full hover:bg-gray-200 btn-transition text-gray-600" aria-label="Settings">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
       </button>
     </div>
   </header>
@@ -45,7 +57,7 @@
     
     <!-- Left/Top Column: Chinese Input Area -->
     <section class="w-full md:w-1/2 h-1/2 md:h-full p-6 md:p-10 border-b md:border-b-0 md:border-r border-gray-200 flex flex-col bg-paper overflow-y-auto scrollbar-hide">
-      <div class="mb-4 flex justify-between items-center text-xs tracking-widest font-bold text-gray-400 uppercase">
+      <div class="mb-4 flex justify-between items-center text-xs font-bold tracking-widest text-gray-400 uppercase">
         <span>Chinese Input</span>
       </div>
       <textarea id="chinese-input" class="flex-1 w-full p-0 text-left bg-transparent text-lg md:text-xl leading-relaxed text-gray-800 font-light placeholder-gray-300 resize-none outline-none" placeholder="在此輸入中文內容..."></textarea>
@@ -58,8 +70,9 @@
 
     <!-- Right/Bottom Column: English Translation Area -->
     <section class="w-full md:w-1/2 h-1/2 md:h-full p-6 md:p-10 flex flex-col bg-white overflow-y-auto scrollbar-hide">
-      <div class="mb-4 text-xs tracking-widest font-bold text-gray-400 uppercase">English Translation</div>
-      <div id="translation-output" class="flex-1 w-full p-0 text-left text-lg md:text-xl leading-relaxed text-gray-800 font-light whitespace-pre-wrap outline-none" contenteditable="false"><span class="text-gray-300">翻譯結果...</span></div>
+      <div class="mb-4 text-xs font-bold tracking-widest text-gray-400 uppercase">English Translation</div>
+      <div id="translation-output" class="flex-1 w-full p-0 text-left text-lg md:text-xl leading-relaxed text-gray-800 font-light whitespace-pre-wrap outline-none" contenteditable="false"><span class="text-gray-300">翻譯結果...</span>
+      </div>
     </section>
   </main>
 
@@ -88,6 +101,7 @@
           <input type="text" id="csv-url-input" class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all text-sm" placeholder="https://docs.google.com/spreadsheets/d/..." />
           <p class="mt-2 text-xs text-gray-500">Must be a publicly accessible CSV link.</p>
         </div>
+
       </div>
 
       <div class="mt-8 flex justify-between items-center">
@@ -104,6 +118,30 @@
 
       <!-- Status Message inside Modal -->
       <div id="settings-status" class="mt-4 text-xs font-medium text-center hidden"></div>
+    </div>
+  </div>
+
+  <!-- Tone Info Modal Overlay -->
+  <div id="tone-info-modal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out">
+    <div class="bg-white w-full max-w-lg rounded-xl shadow-2xl p-8 pt-10 pb-10 transform scale-95 transition-transform duration-300 ease-in-out" id="tone-info-modal-content">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-bold text-gray-800">翻譯風格說明</h2>
+        <button id="close-tone-info-btn" class="text-gray-400 hover:text-gray-600 btn-transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <div class="mt-4">
+        <ul class="text-sm text-gray-600 space-y-4 leading-relaxed">
+          <li><strong class="font-bold text-gray-800">• 一般：</strong>提供標準、自然且準確的專業雙語翻譯。</li>
+          <li><strong class="font-bold text-gray-800">• 書籍：</strong>使用正式、優美的文學語氣，用詞精煉，適合出版書籍或深度閱讀。</li>
+          <li><strong class="font-bold text-gray-800">• 影片：</strong>語氣口語、生動且富有表現力，適合影片字幕或口語腳本。</li>
+          <li><strong class="font-bold text-gray-800">• 網頁：</strong>內容清晰、簡明易懂，句子俐落，適合網站介面或部落格文章。</li>
+          <li><strong class="font-bold text-gray-800">• 心靈小卡：</strong>模仿一行禪師的正念哲學，將文字轉化為溫和、平靜且充滿療癒感的心靈語錄。</li>
+        </ul>
+      </div>
     </div>
   </div>
 

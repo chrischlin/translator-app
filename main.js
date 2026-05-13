@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const settingsModal = document.getElementById('settings-modal');
   const settingsModalContent = document.getElementById('settings-modal-content');
   
+  const toneInfoBtn = document.getElementById('tone-info-btn');
+  const closeToneInfoBtn = document.getElementById('close-tone-info-btn');
+  const toneInfoModal = document.getElementById('tone-info-modal');
+  const toneInfoModalContent = document.getElementById('tone-info-modal-content');
+  
   const apiKeyInput = document.getElementById('api-key-input');
   const csvUrlInput = document.getElementById('csv-url-input');
   const updateGlossaryBtn = document.getElementById('update-glossary-btn');
@@ -44,6 +49,23 @@ document.addEventListener('DOMContentLoaded', () => {
   closeSettingsBtn.addEventListener('click', closeSettings);
   settingsModal.addEventListener('click', (e) => {
     if (e.target === settingsModal) closeSettings();
+  });
+
+  // Tone Info Modal Logic
+  const openToneInfo = () => {
+    toneInfoModal.classList.remove('opacity-0', 'pointer-events-none');
+    toneInfoModalContent.classList.remove('scale-95');
+  };
+
+  const closeToneInfo = () => {
+    toneInfoModal.classList.add('opacity-0', 'pointer-events-none');
+    toneInfoModalContent.classList.add('scale-95');
+  };
+
+  toneInfoBtn.addEventListener('click', openToneInfo);
+  closeToneInfoBtn.addEventListener('click', closeToneInfo);
+  toneInfoModal.addEventListener('click', (e) => {
+    if (e.target === toneInfoModal) closeToneInfo();
   });
 
   const showStatus = (msg, isError = false) => {
@@ -94,14 +116,14 @@ document.addEventListener('DOMContentLoaded', () => {
     translateBtn.disabled = true;
     translateBtn.classList.add('opacity-50', 'cursor-not-allowed');
     translationOutput.innerHTML = `
-     <div class="flex items-center space-x-2 text-indigo-400 mt-2">
-      <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-       </svg>
-       <span class="text-sm tracking-widest uppercase">Translating...</span>
-     </div>
-   `;
+      <div class="flex items-center space-x-2 text-indigo-400 mt-2">
+        <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-sm tracking-widest uppercase">Translating...</span>
+      </div>
+    `;
 
     try {
       // Lazy load glossary if empty and url exists
