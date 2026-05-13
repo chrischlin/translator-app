@@ -13,13 +13,13 @@ const getToneInstruction = (tone) => {
       return "Use a conversational, engaging, and dynamic tone suitable for video subtitles or a script. Keep it natural and expressive.";
     case 'web':
       return "Use a clear, concise, and accessible tone suitable for a webpage or blog post. Keep sentences relatively short and easy to read.";
-    default:
-      return "Translate naturally and accurately.";
-      case 'mindful_card':
+    case 'mindful_card':
       return `Role: Please translate by mimicking the tone and mindfulness philosophy of Thich Nhat Hanh.
 Tone: The text must be concise, gentle, and full of compassion and wisdom. Speak softly as if talking to a friend, bringing inner peace and tranquility.
 Strategy: Do not just provide a rigid literal translation. Grasp the core meaning of the original text and transform it into a healing, mindful quote.
 Imagery: Appropriately integrate imagery of mindfulness and nature (e.g., breathing, smiling, water, falling leaves, footsteps, the present moment) so the translation reads like a relaxing 'mindful card' that encourages a deep breath.`;
+    default:
+      return "Translate naturally and accurately.";
   }
 };
 
@@ -70,6 +70,16 @@ Return ONLY the translated English text. Do not include any explanations, origin
 
     if (!response.ok) {
       const errData = await response.json().catch(() => ({}));
+      
+      const isQuotaError = response.status === 429 || 
+        (errData.error && errData.error.message && errData.error.message.toLowerCase().includes('quota'));
+      
+      if (isQuotaError) {
+        const err = new Error("QUOTA_EXCEEDED");
+        err.isQuotaError = true;
+        throw err;
+      }
+
       throw new Error(`API Error: ${response.status} ${response.statusText} - ${JSON.stringify(errData)}`);
     }
 

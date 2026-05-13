@@ -138,8 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
       translationOutput.innerHTML = translated.replace(/\\n/g, '<br>');
       translationOutput.classList.remove('text-gray-300', 'italic');
     } catch (err) {
-      translationOutput.innerHTML = `<span class="text-red-500 text-sm">Error: ${err.message}</span>`;
-      alert(err.message);
+      if (err.isQuotaError || err.message === "QUOTA_EXCEEDED") {
+        translationOutput.innerHTML = ''; // 清除載入提示
+        alert("系統本月翻譯額度已用盡，請稍後再試或聯繫管理員。");
+      } else {
+        translationOutput.innerHTML = `<span class="text-red-500 text-sm">Error: ${err.message}</span>`;
+      }
     } finally {
       translateBtn.disabled = false;
       translateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
