@@ -27,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const translationOutput = document.getElementById('translation-output');
   const toneSelect = document.getElementById('tone-select');
   
-  const exportWordBtn = document.getElementById('export-word-btn');
+  const exportWordBtnDesktop = document.getElementById('export-word-btn-desktop');
+  const exportWordBtnMobile = document.getElementById('export-word-btn-mobile');
 
   // Initialization
   apiKeyInput.value = Settings.getApiKey();
@@ -146,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Export Logic
-  exportWordBtn.addEventListener('click', () => {
+  const handleExport = () => {
     const source = chineseInput.value.trim();
     // Get innerText to strip HTML and get newlines
     const translated = translationOutput.innerText.trim();
@@ -161,5 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
       alert("Error generating Word document: " + err.message);
     }
-  });
+  };
+
+  exportWordBtnDesktop.addEventListener('click', handleExport);
+  exportWordBtnMobile.addEventListener('click', handleExport);
 });
