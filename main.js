@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const chineseInput = document.getElementById('chinese-input');
   const translationOutput = document.getElementById('translation-output');
   const toneSelect = document.getElementById('tone-select');
-  const loadingIndicator = document.getElementById('loading-indicator');
   
   const exportWordBtn = document.getElementById('export-word-btn');
 
@@ -94,7 +93,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     translateBtn.disabled = true;
     translateBtn.classList.add('opacity-50', 'cursor-not-allowed');
-    loadingIndicator.classList.remove('hidden');
+    translationOutput.innerHTML = `
+     <div class="flex items-center space-x-2 text-indigo-400 mt-2">
+      <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+       </svg>
+       <span class="text-sm tracking-widest uppercase">Translating...</span>
+     </div>
+   `;
 
     try {
       // Lazy load glossary if empty and url exists
@@ -108,11 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
       translationOutput.innerHTML = translated.replace(/\\n/g, '<br>');
       translationOutput.classList.remove('text-gray-300', 'italic');
     } catch (err) {
+      translationOutput.innerHTML = `<span class="text-red-500 text-sm">Error: ${err.message}</span>`;
       alert(err.message);
     } finally {
       translateBtn.disabled = false;
       translateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-      loadingIndicator.classList.add('hidden');
     }
   });
 
