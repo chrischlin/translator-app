@@ -6,20 +6,20 @@ const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-
 const getToneInstruction = (tone) => {
   switch (tone) {
     case 'general':
-      return "Translate naturally and accurately.";
+      return "Role: You are an expert translator of Buddhist texts. Translate the Chinese Buddhist article into English naturally and accurately. Use standard Buddhist terminology, referencing the lexicons of Dharma Drum Mountain, Fo Guang Shan, and Thupten Jinpa for doctrinal accuracy.";
     case 'book':
-      return "Use a formal, literary tone suitable for a published book. Ensure elegance and precise phrasing.";
+      return "Role: You are an expert translator of Buddhist texts. Translate the text into English using a formal, elegant, and scholarly literary tone, mimicking the highly respected translation style of 'Lotsawa House'. Ensure structural fidelity to the original text and precise use of Buddhist terminology (referencing Dharma Drum Mountain, Fo Guang Shan, and Thupten Jinpa).";
     case 'video':
-      return "Use a conversational, engaging, and dynamic tone suitable for video subtitles or a script. Keep it natural and expressive.";
+      return "Role: You are an expert translator of Buddhist texts. Translate the text mimicking the translation style of 'Red Pine' (Bill Porter), but optimize it for spoken delivery (like video subtitles or a script). The tone should be conversational yet profound, dynamic, and expressive. Use standard Buddhist terminology.";
     case 'web':
-      return "Use a clear, concise, and accessible tone suitable for a webpage or blog post. Keep sentences relatively short and easy to read.";
+      return "Role: You are an expert translator of Buddhist texts. Translate the text mimicking the translation style of 'Red Pine' (Bill Porter). The tone should be clear, poetic, and accessible, capturing the spirit and philosophical depth of the original text while keeping sentences relatively concise for webpage reading. Use standard Buddhist terminology.";
     case 'mindful_card':
-      return `Role: Please translate by mimicking the tone and mindfulness philosophy of Thich Nhat Hanh.
+      return `Role: You are an expert translator of Buddhist texts. Please translate by mimicking the tone and mindfulness philosophy of 'Thich Nhat Hanh'.
 Tone: The text must be concise, gentle, and full of compassion and wisdom. Speak softly as if talking to a friend, bringing inner peace and tranquility.
-Strategy: Do not just provide a rigid literal translation. Grasp the core meaning of the original text and transform it into a healing, mindful quote.
-Imagery: Appropriately integrate imagery of mindfulness and nature (e.g., breathing, smiling, water, falling leaves, footsteps, the present moment) so the translation reads like a relaxing 'mindful card' that encourages a deep breath.`;
+Strategy: Do not just provide a rigid literal translation. Grasp the core Buddhist meaning of the original text and transform it into a healing, mindful quote.
+Imagery: Appropriately integrate imagery of mindfulness and nature (e.g., breathing, smiling, water, falling leaves, footsteps, the present moment).`;
     default:
-      return "Translate naturally and accurately.";
+      return "Role: You are an expert translator of Buddhist texts. Translate the Chinese Buddhist article into English naturally and accurately. Use standard Buddhist terminology, referencing the lexicons of Dharma Drum Mountain, Fo Guang Shan, and Thupten Jinpa for doctrinal accuracy.";
   }
 };
 
