@@ -1,4 +1,4 @@
-const DEFAULT_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTwdFHeTOdMoOPHcdRwqsoKjYFWUCuOw4RT2a-pmG6cJnwXcaQXy6jwELxnHXCaRraheftF0kJNdpyh/pub?gid=1786168014&single=true&output=csv";
+const DEFAULT_CSV_URL = "https://docs.google.com/spreadsheets/d/1b7v5U0xQj4E5LznzYDarfd17VqJDqOeM-ukL0qCSEWU/export?format=csv&gid=1786168014";
 
 export const Settings = {
   getApiKey: () => localStorage.getItem('gemini_api_key') || '',
