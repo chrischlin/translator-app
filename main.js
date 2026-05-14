@@ -97,34 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === errorModal) closeErrorModal();
   });
 
-  // Confirm Modal Logic
-  const confirmModal = document.getElementById('confirm-modal');
-  const confirmModalContent = document.getElementById('confirm-modal-content');
-  const cancelConfirmBtn = document.getElementById('cancel-confirm-btn');
-  const okConfirmBtn = document.getElementById('ok-confirm-btn');
 
-  const showConfirmModal = () => {
-    return new Promise((resolve) => {
-      confirmModal.classList.remove('opacity-0', 'pointer-events-none');
-      confirmModalContent.classList.remove('scale-95');
-
-      const cleanup = () => {
-        confirmModal.classList.add('opacity-0', 'pointer-events-none');
-        confirmModalContent.classList.add('scale-95');
-        okConfirmBtn.removeEventListener('click', onOk);
-        cancelConfirmBtn.removeEventListener('click', onCancel);
-        confirmModal.removeEventListener('mousedown', onBackdrop);
-      };
-
-      const onOk = () => { cleanup(); resolve(true); };
-      const onCancel = () => { cleanup(); resolve(false); };
-      const onBackdrop = (e) => { if (e.target === confirmModal) onCancel(); };
-
-      okConfirmBtn.addEventListener('click', onOk);
-      cancelConfirmBtn.addEventListener('click', onCancel);
-      confirmModal.addEventListener('mousedown', onBackdrop);
-    });
-  };
 
   const showStatus = (msg, isError = false) => {
     settingsStatus.textContent = msg;
@@ -135,16 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
   };
 
-  saveSettingsBtn.addEventListener('click', async () => {
+  saveSettingsBtn.addEventListener('click', () => {
     const newApiKey = apiKeyInput.value.trim();
     const newCsvUrl = csvUrlInput.value.trim();
-
-    if (newApiKey === '' || newCsvUrl === '') {
-      const confirmed = await showConfirmModal();
-      if (!confirmed) {
-        return; // 中斷執行並保留視窗
-      }
-    }
 
     Settings.setApiKey(newApiKey);
     Settings.setCsvUrl(newCsvUrl);
@@ -157,13 +123,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (newCsvUrl === '') {
-      Glossary.clear(); // 清空記憶體
+      Glossary.clear(); // 同步清空記憶體
       const clonedCsv = csvUrlInput.cloneNode(true);
       csvUrlInput.replaceWith(clonedCsv);
       csvUrlInput = clonedCsv;
     }
 
     showStatus('設定成功！');
+    setTimeout(() => {
+      closeSettings();
+    }, 1500);
   });
 
   updateGlossaryBtn.addEventListener('click', async () => {
