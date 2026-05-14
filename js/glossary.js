@@ -66,10 +66,15 @@ export const Glossary = {
     
     try {
       const cleanUrl = url.trim();
+      if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+        throw new Error("Invalid CSV URL. It must start with http:// or https://");
+      }
+
       const response = await fetch(cleanUrl, {
         method: 'GET',
         mode: 'cors',
         redirect: 'follow',
+        cache: 'no-store'
       });
       
       if (!response.ok) {

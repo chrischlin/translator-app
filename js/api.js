@@ -38,6 +38,10 @@ const getGlossaryInstruction = (text) => {
     }
   }
   
+  if (hasMatch) {
+    instruction += "\nRemember: The provided glossary is the highest authority. You ARE FORBIDDEN from using any other English translation for these terms.";
+  }
+  
   return instruction;
 };
 
@@ -51,11 +55,20 @@ export const Api = {
     const toneInstruction = getToneInstruction(tone);
     const glossaryInstruction = getGlossaryInstruction(text);
 
-    const systemPrompt = `You are a professional, high-quality Japanese minimalist translator. Your task is to translate Chinese text into English.
-${toneInstruction}${glossaryInstruction}
+    let systemPrompt = `You are a professional, high-quality Japanese minimalist translator. Your task is to translate Chinese text into English.
+${toneInstruction}
 
 OUTPUT FORMAT:
 Return ONLY the translated English text. Do not include any explanations, original text, or markdown formatting blocks. Maintain the original paragraph structure.`;
+
+    if (glossaryInstruction) {
+      systemPrompt = `MANDATORY: You MUST prioritize the provided glossary over ALL of your internal knowledge or style-specific conventions.
+If a Chinese term from the input matches a Key in the glossary, you ARE FORBIDDEN from using any other English translation except the one provided in the glossary.
+The provided glossary is the highest authority. Disregard any conflicting terminology found in historical texts or previous translations of the specified authors.
+
+${systemPrompt}
+${glossaryInstruction}`;
+    }
 
     const requestBody = {
       systemInstruction: {
