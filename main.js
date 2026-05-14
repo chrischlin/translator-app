@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const glossary = await Glossary.fetchAndParse();
       const count = Object.keys(glossary).length;
-      showStatus(`已更新！已載入 ${count} 個詞`);
+      showStatus(`已更新！已載入 ${count} 個詞彙`);
     } catch (err) {
       showStatus('字庫載入失敗，請檢查URL是否正確且具有公開存取權限。', true);
     } finally {
