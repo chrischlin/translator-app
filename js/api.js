@@ -42,7 +42,7 @@ export const Api = {
   translate: async (text, tone) => {
     const apiKey = Settings.getApiKey();
     if (!apiKey) {
-      throw new Error("Gemini API Key is not set. Please configure it in settings.");
+      throw new Error("Gemini API Key 尚未設定，請先至設定中填寫。");
     }
 
     const toneInstruction = getToneInstruction(tone);
