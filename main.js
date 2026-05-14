@@ -104,10 +104,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Clear translation on input change
-  chineseInput.addEventListener('input', () => {
-    translationOutput.innerHTML = '';
-  });
+  // Clear translation on input or tone change
+  const resetTranslationOutput = () => {
+    translationOutput.innerHTML = '<span class="text-gray-300">翻譯結果...</span>';
+  };
+
+  chineseInput.addEventListener('input', resetTranslationOutput);
+  toneSelect.addEventListener('change', resetTranslationOutput);
 
   // Translation Logic
   translateBtn.addEventListener('click', async () => {
