@@ -128,12 +128,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Button State Helpers
+  const setButtonDisabled = (btn, disabled) => {
+    btn.disabled = disabled;
+    if (disabled) {
+      btn.classList.add('opacity-50', 'cursor-not-allowed');
+    } else {
+      btn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+  };
+
+  const checkInputState = () => {
+    const isEmpty = chineseInput.value.trim() === '';
+    setButtonDisabled(translateBtn, isEmpty);
+  };
+
+  const setExportDisabled = (disabled) => {
+    setButtonDisabled(exportWordBtnDesktop, disabled);
+    setButtonDisabled(exportWordBtnMobile, disabled);
+  };
+
+  // Initial States
+  checkInputState();
+  setExportDisabled(true);
+
   // Clear translation on input or tone change
   const resetTranslationOutput = () => {
     translationOutput.innerHTML = '<span class="text-gray-300">翻譯結果...</span>';
+    setExportDisabled(true);
   };
 
-  chineseInput.addEventListener('input', resetTranslationOutput);
+  chineseInput.addEventListener('input', () => {
+    resetTranslationOutput();
+    checkInputState();
+  });
   toneSelect.addEventListener('change', resetTranslationOutput);
 
   // Translation Logic
@@ -141,8 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const text = chineseInput.value.trim();
     if (!text) return;
 
-    translateBtn.disabled = true;
-    translateBtn.classList.add('opacity-50', 'cursor-not-allowed');
+    setButtonDisabled(translateBtn, true);
+    setExportDisabled(true);
     translationOutput.innerHTML = `<span class="inline-flex items-center space-x-2 text-indigo-400">
         <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -162,17 +190,19 @@ document.addEventListener('DOMContentLoaded', () => {
       
       translationOutput.innerHTML = translated.replace(/\\n/g, '<br>');
       translationOutput.classList.remove('text-gray-300', 'italic');
+      
+      setExportDisabled(false);
     } catch (err) {
       if (err.isQuotaError || err.message === "QUOTA_EXCEEDED") {
         translationOutput.innerHTML = '<span class="text-red-500 text-sm">⚠️ 翻譯失敗：翻譯額度已用盡，請稍後再試或聯繫管理員。</span>';
-        showErrorModal("系統本月翻譯額度已用盡，請稍後再試或聯繫管理員。");
+        showErrorModal("翻譯額度已用盡，請稍後再試或聯繫管理員。");
       } else {
         translationOutput.innerHTML = '<span class="text-red-500 text-sm">⚠️ 翻譯失敗：' + err.message + '</span>';
         showErrorModal(err.message);
       }
+      setExportDisabled(true);
     } finally {
-      translateBtn.disabled = false;
-      translateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      checkInputState();
     }
   });
 
