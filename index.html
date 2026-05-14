@@ -174,6 +174,34 @@
     </div>
   </div>
 
+  <!-- Confirm Modal Overlay -->
+  <div id="confirm-modal" class="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out" style="z-index: 60;">
+    <div class="bg-white w-full max-w-sm rounded-xl shadow-2xl p-6 transform scale-95 transition-transform duration-300 ease-in-out" id="confirm-modal-content">
+      <div class="flex flex-col items-center justify-center space-y-4 pt-4">
+        <!-- Warning Icon -->
+        <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-500 mb-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <!-- Message (Centered) -->
+        <h3 class="text-lg font-bold text-gray-900 text-center">警告</h3>
+        <p class="text-sm text-gray-600 text-center leading-relaxed">
+          清空後資料將永久刪除，是否繼續？
+        </p>
+      </div>
+      <!-- Buttons Area -->
+      <div class="mt-8 flex justify-end space-x-3">
+        <button id="cancel-confirm-btn" class="px-5 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 btn-transition text-sm font-medium">
+          取消
+        </button>
+        <button id="ok-confirm-btn" class="px-5 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 btn-transition text-sm font-medium">
+          確認
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Main JavaScript Entry -->
   <script type="module" src="./main.js"></script>
 </body>
