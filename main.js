@@ -69,6 +69,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === toneInfoModal) closeToneInfo();
   });
 
+  // Error Modal Logic
+  const errorModal = document.getElementById('error-modal');
+  const errorModalContent = document.getElementById('error-modal-content');
+  const errorModalTitle = document.getElementById('error-modal-title');
+  const errorModalMsg = document.getElementById('error-modal-msg');
+  const closeErrorModalBtn = document.getElementById('close-error-modal-btn');
+
+  const showErrorModal = (msg, title = "翻譯失敗") => {
+    if (msg) errorModalMsg.textContent = msg;
+    if (errorModalTitle) errorModalTitle.textContent = title;
+    errorModal.classList.remove('opacity-0', 'pointer-events-none');
+    errorModalContent.classList.remove('scale-95');
+  };
+
+  const closeErrorModal = () => {
+    errorModal.classList.add('opacity-0', 'pointer-events-none');
+    errorModalContent.classList.add('scale-95');
+  };
+
+  closeErrorModalBtn.addEventListener('click', closeErrorModal);
+  errorModal.addEventListener('click', (e) => {
+    if (e.target === errorModal) closeErrorModal();
+  });
+
   const showStatus = (msg, isError = false) => {
     settingsStatus.textContent = msg;
     settingsStatus.className = `mt-4 text-xs font-medium text-center ${isError ? 'text-red-600' : 'text-green-600'}`;
@@ -81,12 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
   saveSettingsBtn.addEventListener('click', () => {
     Settings.setApiKey(apiKeyInput.value.trim());
     Settings.setCsvUrl(csvUrlInput.value.trim());
-    showStatus('Settings saved successfully!');
+    showStatus('設定成功！');
   });
 
   updateGlossaryBtn.addEventListener('click', async () => {
     const originalText = updateGlossaryBtn.innerHTML;
-    updateGlossaryBtn.innerHTML = '<span>Updating...</span>';
+    updateGlossaryBtn.innerHTML = '<span>更新中...</span>';
     updateGlossaryBtn.disabled = true;
     
     // Save URL first just in case
@@ -95,9 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const glossary = await Glossary.fetchAndParse();
       const count = Object.keys(glossary).length;
-      showStatus(`Glossary updated! Loaded ${count} terms.`);
+      showStatus(`已更新！已載入 ${count} 個詞`);
     } catch (err) {
-      showStatus(err.message || 'Failed to update glossary', true);
+      showStatus(err.message || '更新失敗', true);
     } finally {
       updateGlossaryBtn.innerHTML = originalText;
       updateGlossaryBtn.disabled = false;
@@ -124,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        <span class="text-sm tracking-widest uppercase">Translating...</span>
+        <span class="text-sm tracking-widest uppercase">翻譯中...</span>
       </span>`;
 
     try {
@@ -140,10 +164,11 @@ document.addEventListener('DOMContentLoaded', () => {
       translationOutput.classList.remove('text-gray-300', 'italic');
     } catch (err) {
       if (err.isQuotaError || err.message === "QUOTA_EXCEEDED") {
-        translationOutput.innerHTML = ''; // 清除載入提示
-        alert("系統本月翻譯額度已用盡，請稍後再試或聯繫管理員。");
+        translationOutput.innerHTML = '<span class="text-red-500 text-sm">⚠️ 翻譯失敗：翻譯額度已用盡，請稍後再試或聯繫管理員。</span>';
+        showErrorModal("系統本月翻譯額度已用盡，請稍後再試或聯繫管理員。");
       } else {
-        translationOutput.innerHTML = `<span class="text-red-500 text-sm">Error: ${err.message}</span>`;
+        translationOutput.innerHTML = '<span class="text-red-500 text-sm">⚠️ 翻譯失敗：' + err.message + '</span>';
+        showErrorModal(err.message);
       }
     } finally {
       translateBtn.disabled = false;
@@ -158,14 +183,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const translated = translationOutput.innerText.trim();
     
     if (!source || !translated || translationOutput.classList.contains('italic')) {
-      alert("Please translate some text before exporting.");
+      showErrorModal("匯出前請先翻譯一些文字。", "無法匯出");
       return;
     }
 
     try {
       Export.generateWordDoc(source, translated);
     } catch (err) {
-      alert("Error generating Word document: " + err.message);
+      showErrorModal("產生 Word 檔案時發生錯誤：" + err.message, "匯出失敗");
     }
   };
 
