@@ -57,6 +57,7 @@ const parseCSV = (text) => {
 
 export const Glossary = {
   get: () => currentGlossary,
+  clear: () => { currentGlossary = {}; },
   
   fetchAndParse: async () => {
     const url = Settings.getCsvUrl();

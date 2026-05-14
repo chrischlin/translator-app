@@ -2,8 +2,20 @@ const DEFAULT_CSV_URL = "https://docs.google.com/spreadsheets/d/1b7v5U0xQj4E5Lzn
 
 export const Settings = {
   getApiKey: () => localStorage.getItem('gemini_api_key') || '',
-  setApiKey: (key) => localStorage.setItem('gemini_api_key', key),
+  setApiKey: (key) => {
+    if (!key || key.trim() === '') {
+      localStorage.removeItem('gemini_api_key');
+    } else {
+      localStorage.setItem('gemini_api_key', key.trim());
+    }
+  },
   
   getCsvUrl: () => localStorage.getItem('glossary_csv_url') || DEFAULT_CSV_URL,
-  setCsvUrl: (url) => localStorage.setItem('glossary_csv_url', url),
+  setCsvUrl: (url) => {
+    if (!url || url.trim() === '') {
+      localStorage.removeItem('glossary_csv_url');
+    } else {
+      localStorage.setItem('glossary_csv_url', url.trim());
+    }
+  },
 };

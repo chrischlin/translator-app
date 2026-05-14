@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const toneInfoModal = document.getElementById('tone-info-modal');
   const toneInfoModalContent = document.getElementById('tone-info-modal-content');
   
-  const apiKeyInput = document.getElementById('api-key-input');
-  const csvUrlInput = document.getElementById('csv-url-input');
+  let apiKeyInput = document.getElementById('api-key-input');
+  let csvUrlInput = document.getElementById('csv-url-input');
   const updateGlossaryBtn = document.getElementById('update-glossary-btn');
   const saveSettingsBtn = document.getElementById('save-settings-btn');
   const settingsStatus = document.getElementById('settings-status');
@@ -107,8 +107,33 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   saveSettingsBtn.addEventListener('click', () => {
-    Settings.setApiKey(apiKeyInput.value.trim());
-    Settings.setCsvUrl(csvUrlInput.value.trim());
+    const newApiKey = apiKeyInput.value.trim();
+    const newCsvUrl = csvUrlInput.value.trim();
+
+    if (newApiKey === '' || newCsvUrl === '') {
+      const confirmed = window.confirm('清空後資料將永久刪除，是否繼續？');
+      if (!confirmed) {
+        return; // 中斷執行並保留視窗
+      }
+    }
+
+    Settings.setApiKey(newApiKey);
+    Settings.setCsvUrl(newCsvUrl);
+
+    // 徹底阻斷 Cmd+Z 幽靈復原：替換 DOM 元素以清除 Undo Stack
+    if (newApiKey === '') {
+      const clonedApi = apiKeyInput.cloneNode(true);
+      apiKeyInput.replaceWith(clonedApi);
+      apiKeyInput = clonedApi;
+    }
+
+    if (newCsvUrl === '') {
+      Glossary.clear(); // 清空記憶體
+      const clonedCsv = csvUrlInput.cloneNode(true);
+      csvUrlInput.replaceWith(clonedCsv);
+      csvUrlInput = clonedCsv;
+    }
+
     showStatus('設定成功！');
     setTimeout(() => {
       closeSettings();
