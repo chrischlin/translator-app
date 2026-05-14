@@ -36,6 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Settings Modal Logic
   const openSettings = () => {
+    // Force reset inputs to the last saved state when opening
+    apiKeyInput.value = Settings.getApiKey();
+    csvUrlInput.value = Settings.getCsvUrl();
+    
     settingsModal.classList.remove('opacity-0', 'pointer-events-none');
     settingsModalContent.classList.remove('scale-95');
   };
@@ -48,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   settingsBtn.addEventListener('click', openSettings);
   closeSettingsBtn.addEventListener('click', closeSettings);
-  settingsModal.addEventListener('click', (e) => {
+  settingsModal.addEventListener('mousedown', (e) => {
     if (e.target === settingsModal) closeSettings();
   });
 
@@ -65,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   toneInfoBtn.addEventListener('click', openToneInfo);
   closeToneInfoBtn.addEventListener('click', closeToneInfo);
-  toneInfoModal.addEventListener('click', (e) => {
+  toneInfoModal.addEventListener('mousedown', (e) => {
     if (e.target === toneInfoModal) closeToneInfo();
   });
 
@@ -89,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   closeErrorModalBtn.addEventListener('click', closeErrorModal);
-  errorModal.addEventListener('click', (e) => {
+  errorModal.addEventListener('mousedown', (e) => {
     if (e.target === errorModal) closeErrorModal();
   });
 
