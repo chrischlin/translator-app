@@ -25,24 +25,17 @@ Imagery: Appropriately integrate imagery of mindfulness and nature (e.g., breath
 
 const getGlossaryInstruction = (text) => {
   const glossary = Glossary.get();
-  let instruction = "";
-  let hasMatch = false;
   
-  for (const ch in glossary) {
-    if (text.includes(ch)) {
-      if (!hasMatch) {
-        instruction = "\n\nStrictly adhere to this glossary:\n";
-        hasMatch = true;
-      }
-      instruction += `- ${ch} = ${glossary[ch]}\n`;
-    }
-  }
+  // 1. 轉為陣列並使用 filter 與 includes 進行高效率精準比對
+  const matchedTerms = Object.entries(glossary).filter(([ch, _en]) => text.includes(ch));
   
-  if (hasMatch) {
-    instruction += "\nRemember: The provided glossary is the highest authority. You ARE FORBIDDEN from using any other English translation for these terms.";
-  }
+  // 2. 如果沒有任何命中，直接回傳空字串，完全不浪費 API Token
+  if (matchedTerms.length === 0) return "";
+
+  // 3. 使用 reduce 組合出精簡的提示字串
+  const glossaryList = matchedTerms.reduce((acc, [ch, en]) => acc + `- ${ch} = ${en}\n`, "");
   
-  return instruction;
+  return `\n\nStrictly adhere to this glossary:\n${glossaryList}\nRemember: The provided glossary is the highest authority. You ARE FORBIDDEN from using any other English translation for these terms.`;
 };
 
 export const Api = {
