@@ -106,22 +106,31 @@ document.addEventListener('DOMContentLoaded', () => {
     Settings.setApiKey(apiKeyInput.value.trim());
     Settings.setCsvUrl(csvUrlInput.value.trim());
     showStatus('設定成功！');
+    setTimeout(() => {
+      closeSettings();
+    }, 1500);
   });
 
   updateGlossaryBtn.addEventListener('click', async () => {
+    const csvUrl = csvUrlInput.value.trim();
+    if (csvUrl === '') {
+      showStatus('請輸入有效的 CSV URL', true);
+      return;
+    }
+
     const originalText = updateGlossaryBtn.innerHTML;
     updateGlossaryBtn.innerHTML = '<span>更新中...</span>';
     updateGlossaryBtn.disabled = true;
     
     // Save URL first just in case
-    Settings.setCsvUrl(csvUrlInput.value.trim());
+    Settings.setCsvUrl(csvUrl);
 
     try {
       const glossary = await Glossary.fetchAndParse();
       const count = Object.keys(glossary).length;
       showStatus(`已更新！已載入 ${count} 個詞`);
     } catch (err) {
-      showStatus(err.message || '更新失敗', true);
+      showStatus('字庫載入失敗，請檢查URL是否正確且具有公開存取權限。', true);
     } finally {
       updateGlossaryBtn.innerHTML = originalText;
       updateGlossaryBtn.disabled = false;
