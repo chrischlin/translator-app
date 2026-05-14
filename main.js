@@ -99,14 +99,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+  let statusTimeout;
+  
+  const clearStatus = () => {
+    if (settingsStatus.classList.contains('text-red-600')) {
+      settingsStatus.classList.add('hidden');
+    }
+    if (statusTimeout) {
+      clearTimeout(statusTimeout);
+      statusTimeout = null;
+    }
+  };
+
   const showStatus = (msg, isError = false) => {
     settingsStatus.textContent = msg;
     settingsStatus.className = `mt-4 text-xs font-medium text-center ${isError ? 'text-red-600' : 'text-green-600'}`;
     settingsStatus.classList.remove('hidden');
-    setTimeout(() => {
-      settingsStatus.classList.add('hidden');
-    }, 3000);
+    
+    // Clear any existing timeout to prevent overlapping hides
+    if (statusTimeout) {
+      clearTimeout(statusTimeout);
+      statusTimeout = null;
+    }
+    
+    // Only auto-hide if it's NOT an error
+    if (!isError) {
+      statusTimeout = setTimeout(() => {
+        settingsStatus.classList.add('hidden');
+      }, 3000);
+    }
   };
+
+  apiKeyInput.addEventListener('focus', clearStatus);
+  csvUrlInput.addEventListener('focus', clearStatus);
+  apiKeyInput.addEventListener('input', clearStatus);
+  csvUrlInput.addEventListener('input', clearStatus);
 
   saveSettingsBtn.addEventListener('click', () => {
     const newApiKey = apiKeyInput.value.trim();
@@ -209,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        <span class="text-sm tracking-widest uppercase">翻譯中...</span>
+        <span class="text-sm tracking-widest uppercase">Translating...</span>
       </span>`;
 
     try {

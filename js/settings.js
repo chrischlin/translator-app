@@ -1,4 +1,4 @@
-const DEFAULT_CSV_URL = "https://docs.google.com/spreadsheets/d/1b7v5U0xQj4E5LznzYDarfd17VqJDqOeM-ukL0qCSEWU/export?format=csv&gid=1786168014";
+const DEFAULT_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTwdFHeTOdMoOPHcdRwqsoKjYFWUCuOw4RT2a-pmG6cJnwXcaQXy6jwELxnHXCaRraheftF0kJNdpyh/pub?gid=1786168014&single=true&output=csv";
 
 export const Settings = {
   getApiKey: () => localStorage.getItem('gemini_api_key') || '',
@@ -10,10 +10,13 @@ export const Settings = {
     }
   },
   
-  getCsvUrl: () => localStorage.getItem('glossary_csv_url') || DEFAULT_CSV_URL,
+  getCsvUrl: () => {
+    const val = localStorage.getItem('glossary_csv_url');
+    return val !== null ? val : DEFAULT_CSV_URL;
+  },
   setCsvUrl: (url) => {
     if (!url || url.trim() === '') {
-      localStorage.removeItem('glossary_csv_url');
+      localStorage.setItem('glossary_csv_url', '');
     } else {
       localStorage.setItem('glossary_csv_url', url.trim());
     }
