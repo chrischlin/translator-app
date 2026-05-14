@@ -69,7 +69,12 @@ ${glossaryInstruction}`;
       },
       contents: [{
         parts: [{ text }]
-      }]
+      }],
+      generationConfig: {
+        temperature: 0,
+        topK: 1,
+        topP: 0.1
+      }
     };
 
     const response = await fetch(`${API_URL}?key=${apiKey}`, {
