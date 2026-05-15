@@ -1,8 +1,16 @@
 import './style.css';
-import { Settings } from './js/settings.js';
-import { Glossary } from './js/glossary.js';
-import { Api } from './js/api.js';
-import { Export } from './js/export.js';
+import {
+  Settings
+} from './js/settings.js';
+import {
+  Glossary
+} from './js/glossary.js';
+import {
+  Api
+} from './js/api.js';
+import {
+  Export
+} from './js/export.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // UI Elements
@@ -10,12 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeSettingsBtn = document.getElementById('close-settings-btn');
   const settingsModal = document.getElementById('settings-modal');
   const settingsModalContent = document.getElementById('settings-modal-content');
-  
+
   const toneInfoBtn = document.getElementById('tone-info-btn');
   const closeToneInfoBtn = document.getElementById('close-tone-info-btn');
   const toneInfoModal = document.getElementById('tone-info-modal');
   const toneInfoModalContent = document.getElementById('tone-info-modal-content');
-  
+
   let apiKeyInput = document.getElementById('api-key-input');
   let csvUrlInput = document.getElementById('csv-url-input');
   const updateGlossaryBtn = document.getElementById('update-glossary-btn');
@@ -26,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const chineseInput = document.getElementById('chinese-input');
   const translationOutput = document.getElementById('translation-output');
   const toneSelect = document.getElementById('tone-select');
-  
+
   const exportWordBtnDesktop = document.getElementById('export-word-btn-desktop');
   const exportWordBtnMobile = document.getElementById('export-word-btn-mobile');
 
@@ -39,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Force reset inputs to the last saved state when opening
     apiKeyInput.value = Settings.getApiKey();
     csvUrlInput.value = Settings.getCsvUrl();
-    
+
     settingsModal.classList.remove('opacity-0', 'pointer-events-none');
     settingsModalContent.classList.remove('scale-95');
   };
@@ -100,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   let statusTimeout;
-  
+
   const clearStatus = () => {
     if (settingsStatus.classList.contains('text-red-600')) {
       settingsStatus.classList.add('hidden');
@@ -115,13 +123,13 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsStatus.textContent = msg;
     settingsStatus.className = `mt-4 text-xs font-medium text-center ${isError ? 'text-red-600' : 'text-green-600'}`;
     settingsStatus.classList.remove('hidden');
-    
+
     // Clear any existing timeout to prevent overlapping hides
     if (statusTimeout) {
       clearTimeout(statusTimeout);
       statusTimeout = null;
     }
-    
+
     // Only auto-hide if it's NOT an error
     if (!isError) {
       statusTimeout = setTimeout(() => {
@@ -172,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalText = updateGlossaryBtn.innerHTML;
     updateGlossaryBtn.innerHTML = '<span>更新中...</span>';
     updateGlossaryBtn.disabled = true;
-    
+
     // Save URL first just in case
     Settings.setCsvUrl(csvUrl);
 
@@ -242,15 +250,19 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       // Lazy load glossary if empty and url exists
       if (Object.keys(Glossary.get()).length === 0 && Settings.getCsvUrl()) {
-         try { await Glossary.fetchAndParse(); } catch (e) { console.warn("Failed lazy load of glossary", e); }
+        try {
+          await Glossary.fetchAndParse();
+        } catch (e) {
+          console.warn("Failed lazy load of glossary", e);
+        }
       }
 
       const tone = toneSelect.value;
       const translated = await Api.translate(text, tone);
-      
+
       translationOutput.innerHTML = translated.replace(/\\n/g, '<br>');
       translationOutput.classList.remove('text-gray-300', 'italic');
-      
+
       setExportDisabled(false);
     } catch (err) {
       if (err.isQuotaError || err.message === "QUOTA_EXCEEDED") {
@@ -271,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const source = chineseInput.value.trim();
     // Get innerText to strip HTML and get newlines
     const translated = translationOutput.innerText.trim();
-    
+
     if (!source || !translated || translationOutput.classList.contains('italic')) {
       showErrorModal("匯出前請先翻譯一些文字。", "無法匯出");
       return;

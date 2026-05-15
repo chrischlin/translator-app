@@ -1,36 +1,47 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Translator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
 </head>
+
 <body class="h-screen flex flex-col relative">
 
   <!-- Navigation Bar -->
-  <header class="w-full flex flex-col gap-4 px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-200 bg-paper/80 backdrop-blur-md z-10 sticky top-0">
-    
+  <header
+    class="w-full flex flex-col gap-4 px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-200 bg-paper/80 backdrop-blur-md z-10 sticky top-0">
+
     <!-- Row 1: Title and Icons -->
     <div class="flex justify-between items-center w-full">
       <h1 class="text-xl sm:text-2xl font-bold tracking-widest text-gray-900">AI中英文翻譯</h1>
-      
+
       <div class="flex items-center gap-4">
-        <button id="export-word-btn-desktop" class="hidden md:flex px-4 py-1.5 rounded border border-gray-300 hover:bg-gray-100 text-sm font-medium tracking-wide btn-transition text-gray-700 items-center justify-center whitespace-nowrap">
+        <button id="export-word-btn-desktop"
+          class="hidden md:flex px-4 py-1.5 rounded border border-gray-300 hover:bg-gray-100 text-sm font-medium tracking-wide btn-transition text-gray-700 items-center justify-center whitespace-nowrap">
           匯出 Word
         </button>
-        <button id="tone-info-btn" class="p-2 rounded-full hover:bg-gray-200 btn-transition text-gray-600" aria-label="風格說明">
+        <button id="tone-info-btn" class="p-2 rounded-full hover:bg-gray-200 btn-transition text-gray-600"
+          aria-label="風格說明">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </button>
-        <button id="settings-btn" class="p-2 rounded-full hover:bg-gray-200 btn-transition text-gray-600" aria-label="設定">
+        <button id="settings-btn" class="p-2 rounded-full hover:bg-gray-200 btn-transition text-gray-600"
+          aria-label="設定">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
         </button>
       </div>
@@ -40,7 +51,8 @@
     <div class="flex justify-between items-center w-full">
       <div class="flex items-center space-x-2">
         <label for="tone-select" class="text-sm font-medium text-gray-600 tracking-wide whitespace-nowrap">風格選擇：</label>
-        <select id="tone-select" class="bg-transparent border border-gray-300 rounded px-2 sm:px-3 py-1 text-sm text-gray-600 focus:outline-none focus:border-gray-500 btn-transition w-auto">
+        <select id="tone-select"
+          class="bg-transparent border border-gray-300 rounded px-2 sm:px-3 py-1 text-sm text-gray-600 focus:outline-none focus:border-gray-500 btn-transition w-auto">
           <option value="general" selected>一般</option>
           <option value="book">書籍</option>
           <option value="video">影片</option>
@@ -49,7 +61,8 @@
         </select>
       </div>
 
-      <button id="export-word-btn-mobile" class="flex md:hidden px-4 sm:px-5 py-1.5 sm:py-2 rounded border border-gray-300 hover:bg-gray-100 text-sm font-medium tracking-wide btn-transition text-gray-700">
+      <button id="export-word-btn-mobile"
+        class="flex md:hidden px-4 sm:px-5 py-1.5 sm:py-2 rounded border border-gray-300 hover:bg-gray-100 text-sm font-medium tracking-wide btn-transition text-gray-700">
         匯出 Word
       </button>
     </div>
@@ -57,15 +70,19 @@
 
   <!-- Main Content Area: Split Layout -->
   <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
-    
+
     <!-- Left/Top Column: Chinese Input Area -->
-    <section class="w-full md:w-1/2 h-1/2 md:h-full p-6 md:p-10 border-b md:border-b-0 md:border-r border-gray-200 flex flex-col bg-paper overflow-y-auto scrollbar-hide">
+    <section
+      class="w-full md:w-1/2 h-1/2 md:h-full p-6 md:p-10 border-b md:border-b-0 md:border-r border-gray-200 flex flex-col bg-paper overflow-y-auto scrollbar-hide">
       <div class="mb-4 flex justify-between items-center text-xs font-bold tracking-widest text-gray-400 uppercase">
         <span>CHINESE INPUT</span>
       </div>
-      <textarea id="chinese-input" class="flex-1 w-full p-0 text-left bg-transparent text-lg md:text-xl leading-relaxed text-gray-800 font-light placeholder-gray-300 resize-none outline-none" placeholder="在此輸入中文內容..."></textarea>
+      <textarea id="chinese-input"
+        class="flex-1 w-full p-0 text-left bg-transparent text-lg md:text-xl leading-relaxed text-gray-800 font-light placeholder-gray-300 resize-none outline-none"
+        placeholder="在此輸入中文內容..."></textarea>
       <div class="mt-4 flex justify-end">
-        <button id="translate-btn" class="px-6 md:px-8 py-2 md:py-3 bg-gray-900 text-white rounded shadow hover:bg-gray-800 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 btn-transition tracking-widest font-light text-sm md:text-base">
+        <button id="translate-btn"
+          class="px-6 md:px-8 py-2 md:py-3 bg-gray-900 text-white rounded shadow hover:bg-gray-800 focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 btn-transition tracking-widest font-light text-sm md:text-base">
           Translate
         </button>
       </div>
@@ -74,14 +91,19 @@
     <!-- Right/Bottom Column: English Translation Area -->
     <section class="w-full md:w-1/2 h-1/2 md:h-full p-6 md:p-10 flex flex-col bg-white overflow-y-auto scrollbar-hide">
       <div class="mb-4 text-xs font-bold tracking-widest text-gray-400 uppercase">ENGLISH TRANSLATION</div>
-      <div id="translation-output" class="flex-1 w-full p-0 text-left text-lg md:text-xl leading-relaxed text-gray-800 font-light whitespace-pre-wrap outline-none" contenteditable="false"><span class="text-gray-300">翻譯結果...</span>
+      <div id="translation-output"
+        class="flex-1 w-full p-0 text-left text-lg md:text-xl leading-relaxed text-gray-800 font-light whitespace-pre-wrap outline-none"
+        contenteditable="false"><span class="text-gray-300">翻譯結果...</span>
       </div>
     </section>
   </main>
 
   <!-- Settings Modal Overlay -->
-  <div id="settings-modal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out">
-    <div class="bg-white w-full max-w-lg rounded-xl shadow-2xl p-8 transform scale-95 transition-transform duration-300 ease-in-out" id="settings-modal-content">
+  <div id="settings-modal"
+    class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out">
+    <div
+      class="bg-white w-full max-w-lg rounded-xl shadow-2xl p-8 transform scale-95 transition-transform duration-300 ease-in-out"
+      id="settings-modal-content">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-medium text-gray-800">設定</h2>
         <button id="close-settings-btn" class="text-gray-400 hover:text-gray-600 btn-transition">
@@ -90,30 +112,37 @@
           </svg>
         </button>
       </div>
-      
+
       <div class="space-y-6">
         <!-- API Key Field -->
         <div>
           <label for="api-key-input" class="block text-sm font-medium text-gray-700 mb-2">Gemini API Key</label>
-          <input type="password" id="api-key-input" class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all text-sm" placeholder="請輸入您的 Gemini API Key" />
+          <input type="password" id="api-key-input"
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all text-sm"
+            placeholder="請輸入您的 Gemini API Key" />
         </div>
 
         <!-- Glossary CSV URL Field -->
         <div>
           <label for="csv-url-input" class="block text-sm font-medium text-gray-700 mb-2">Glossary CSV URL</label>
-          <input type="text" id="csv-url-input" class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all text-sm" placeholder="https://docs.google.com/spreadsheets/d/..." />
+          <input type="text" id="csv-url-input"
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none transition-all text-sm"
+            placeholder="https://docs.google.com/spreadsheets/d/..." />
         </div>
 
       </div>
 
       <div class="mt-8 flex justify-between items-center">
-        <button id="update-glossary-btn" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium btn-transition flex items-center space-x-1">
+        <button id="update-glossary-btn"
+          class="text-sm text-indigo-600 hover:text-indigo-800 font-medium btn-transition flex items-center space-x-1">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
           <span>更新字庫</span>
         </button>
-        <button id="save-settings-btn" class="px-6 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 btn-transition text-sm font-medium">
+        <button id="save-settings-btn"
+          class="px-6 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 btn-transition text-sm font-medium">
           確認
         </button>
       </div>
@@ -124,8 +153,11 @@
   </div>
 
   <!-- Tone Info Modal Overlay -->
-  <div id="tone-info-modal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out">
-    <div class="bg-white w-full max-w-lg rounded-xl shadow-2xl p-8 pt-10 pb-10 transform scale-95 transition-transform duration-300 ease-in-out" id="tone-info-modal-content">
+  <div id="tone-info-modal"
+    class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out">
+    <div
+      class="bg-white w-full max-w-lg rounded-xl shadow-2xl p-8 pt-10 pb-10 transform scale-95 transition-transform duration-300 ease-in-out"
+      id="tone-info-modal-content">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold text-gray-800">翻譯風格說明</h2>
         <button id="close-tone-info-btn" class="text-gray-400 hover:text-gray-600 btn-transition">
@@ -134,7 +166,7 @@
           </svg>
         </button>
       </div>
-      
+
       <div class="mt-4">
         <ul class="text-sm text-gray-600 space-y-4 leading-relaxed">
           <li><strong class="font-bold text-gray-800">• 一般：</strong>提供標準、自然且準確的專業雙語翻譯。</li>
@@ -148,26 +180,31 @@
   </div>
 
   <!-- Error Modal Overlay -->
-  <div id="error-modal" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out">
-    <div class="bg-white w-full max-w-sm rounded-xl shadow-2xl p-6 transform scale-95 transition-transform duration-300 ease-in-out" id="error-modal-content">
+  <div id="error-modal"
+    class="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out">
+    <div
+      class="bg-white w-full max-w-sm rounded-xl shadow-2xl p-6 transform scale-95 transition-transform duration-300 ease-in-out"
+      id="error-modal-content">
       <div class="flex flex-col items-center justify-center space-y-4 pt-4">
         <!-- Error Icon -->
         <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-500 mb-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         </div>
-        
+
         <!-- Error Message (Centered) -->
         <h3 id="error-modal-title" class="text-lg font-bold text-gray-900 text-center">翻譯失敗</h3>
         <p id="error-modal-msg" class="text-sm text-gray-600 text-center leading-relaxed">
           翻譯額度已用盡，請稍後再試或聯繫管理員。
         </p>
       </div>
-      
+
       <!-- Buttons Area (No border, justify-end) -->
       <div class="mt-8 flex justify-end">
-        <button id="close-error-modal-btn" class="px-5 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 btn-transition text-sm font-medium">
+        <button id="close-error-modal-btn"
+          class="px-5 py-2 bg-gray-900 text-white rounded hover:bg-gray-800 btn-transition text-sm font-medium">
           關閉
         </button>
       </div>
@@ -179,4 +216,5 @@
   <!-- Main JavaScript Entry -->
   <script type="module" src="./main.js"></script>
 </body>
+
 </html>

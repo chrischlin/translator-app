@@ -1,5 +1,9 @@
-import { Settings } from './settings.js';
-import { Glossary } from './glossary.js';
+import {
+  Settings
+} from './settings.js';
+import {
+  Glossary
+} from './glossary.js';
 
 const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
@@ -15,9 +19,9 @@ const getToneInstruction = (tone) => {
       return "Role: You are an expert translator of Buddhist texts. Translate the text mimicking the translation style of 'Red Pine' (Bill Porter). The tone should be clear, poetic, and accessible, capturing the spirit and philosophical depth of the original text while keeping sentences relatively concise for webpage reading. Use standard Buddhist terminology.";
     case 'mindful_card':
       return `Role: You are an expert translator of Buddhist texts. Please translate by mimicking the tone and mindfulness philosophy of 'Thich Nhat Hanh'.
-Tone: The text must be concise, gentle, and full of compassion and wisdom. Speak softly as if talking to a friend, bringing inner peace and tranquility.
-Strategy: Do not just provide a rigid literal translation. Grasp the core Buddhist meaning of the original text and transform it into a healing, mindful quote.
-Imagery: Appropriately integrate imagery of mindfulness and nature (e.g., breathing, smiling, water, falling leaves, footsteps, the present moment).`;
+      Tone: The text must be concise, gentle, and full of compassion and wisdom. Speak softly as if talking to a friend, bringing inner peace and tranquility.
+      Strategy: Do not just provide a rigid literal translation. Grasp the core Buddhist meaning of the original text and transform it into a healing, mindful quote.
+      Imagery: Appropriately integrate imagery of mindfulness and nature (e.g., breathing, smiling, water, falling leaves, footsteps, the present moment).`;
     default:
       return "Role: You are an expert translator of Buddhist texts. Translate the Chinese Buddhist article into English naturally and accurately. Use standard Buddhist terminology, referencing the lexicons of Dharma Drum Mountain, Fo Guang Shan, and Thupten Jinpa for doctrinal accuracy.";
   }
@@ -25,16 +29,16 @@ Imagery: Appropriately integrate imagery of mindfulness and nature (e.g., breath
 
 const getGlossaryInstruction = (text) => {
   const glossary = Glossary.get();
-  
+
   // 1. 轉為陣列並使用 filter 與 includes 進行高效率精準比對
   const matchedTerms = Object.entries(glossary).filter(([ch, _en]) => text.includes(ch));
-  
+
   // 2. 如果沒有任何命中，直接回傳空字串，完全不浪費 API Token
   if (matchedTerms.length === 0) return "";
 
   // 3. 使用 reduce 組合出精簡的提示字串
   const glossaryList = matchedTerms.reduce((acc, [ch, en]) => acc + `- ${ch} = ${en}\n`, "");
-  
+
   return `\n\nStrictly adhere to this glossary:\n${glossaryList}\nRemember: The provided glossary is the highest authority. You ARE FORBIDDEN from using any other English translation for these terms.`;
 };
 
@@ -65,10 +69,14 @@ ${glossaryInstruction}`;
 
     const requestBody = {
       systemInstruction: {
-        parts: [{ text: systemPrompt }]
+        parts: [{
+          text: systemPrompt
+        }]
       },
       contents: [{
-        parts: [{ text }]
+        parts: [{
+          text
+        }]
       }],
       generationConfig: {
         temperature: 0,
@@ -87,10 +95,10 @@ ${glossaryInstruction}`;
 
     if (!response.ok) {
       const errData = await response.json().catch(() => ({}));
-      
-      const isQuotaError = response.status === 429 || 
+
+      const isQuotaError = response.status === 429 ||
         (errData.error && errData.error.message && errData.error.message.toLowerCase().includes('quota'));
-      
+
       if (isQuotaError) {
         const err = new Error("QUOTA_EXCEEDED");
         err.isQuotaError = true;

@@ -9,7 +9,7 @@ export const Settings = {
       localStorage.setItem('gemini_api_key', key.trim());
     }
   },
-  
+
   getCsvUrl: () => {
     const val = localStorage.getItem('glossary_csv_url');
     return val !== null ? val : DEFAULT_CSV_URL;

@@ -1,4 +1,6 @@
-import { Settings } from './settings.js';
+import {
+  Settings
+} from './settings.js';
 
 let currentGlossary = {};
 
@@ -34,7 +36,7 @@ const parseCSV = (text) => {
       currentRow.push(currentCell.trim());
       // 過濾完全空白的列
       if (currentRow.some(c => c !== '')) {
-         result.push(currentRow);
+        result.push(currentRow);
       }
       currentRow = [];
       currentCell = '';
@@ -48,7 +50,7 @@ const parseCSV = (text) => {
   if (currentCell !== '' || currentRow.length > 0) {
     currentRow.push(currentCell.trim());
     if (currentRow.some(c => c !== '')) {
-       result.push(currentRow);
+      result.push(currentRow);
     }
   }
 
@@ -57,14 +59,16 @@ const parseCSV = (text) => {
 
 export const Glossary = {
   get: () => currentGlossary,
-  clear: () => { currentGlossary = {}; },
-  
+  clear: () => {
+    currentGlossary = {};
+  },
+
   fetchAndParse: async () => {
     const url = Settings.getCsvUrl();
     if (!url) {
       throw new Error("CSV URL is not configured.");
     }
-    
+
     try {
       const cleanUrl = url.trim();
       if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
@@ -77,19 +81,19 @@ export const Glossary = {
         redirect: 'follow',
         cache: 'no-store'
       });
-      
+
       if (!response.ok) {
         throw new Error(`Failed to fetch CSV: ${response.status} ${response.statusText}`);
       }
-      
+
       let csvText = await response.text();
-      
+
       // 安全過濾：移除開頭可能存在的 BOM 字元
       csvText = csvText.replace(/^\uFEFF/, '');
-      
+
       const rows = parseCSV(csvText);
       const parsed = {};
-      
+
       // 安全過濾：略過第一行的標題 (i = 1 開始)
       for (let i = 1; i < rows.length; i++) {
         const row = rows[i];
@@ -102,10 +106,10 @@ export const Glossary = {
           }
         }
       }
-      
+
       currentGlossary = parsed;
       return parsed;
-      
+
     } catch (err) {
       console.error("Error updating glossary:", err);
       throw err;
