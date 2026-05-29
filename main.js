@@ -37,6 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const exportWordBtnDesktop = document.getElementById('export-word-btn-desktop');
   const exportWordBtnMobile = document.getElementById('export-word-btn-mobile');
+  const copyBtn = document.getElementById('copy-btn');
+  const copyIcon = document.getElementById('copy-icon');
+  const copyText = document.getElementById('copy-text');
 
   // Initialization
   apiKeyInput.value = Settings.getApiKey();
@@ -214,6 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const setExportDisabled = (disabled) => {
     setButtonDisabled(exportWordBtnDesktop, disabled);
     setButtonDisabled(exportWordBtnMobile, disabled);
+    setButtonDisabled(copyBtn, disabled);
   };
 
   // Initial States
@@ -307,4 +311,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   exportWordBtnDesktop.addEventListener('click', handleExport);
   exportWordBtnMobile.addEventListener('click', handleExport);
+
+  // Copy Logic
+  let copyTimeout;
+  copyBtn.addEventListener('click', async () => {
+    const translated = translationOutput.innerText.trim();
+    if (!translated || translationOutput.classList.contains('italic')) return;
+
+    try {
+      await navigator.clipboard.writeText(translated);
+      
+      copyText.textContent = 'COPIED';
+      copyIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />`;
+      copyBtn.classList.add('text-green-600');
+      copyBtn.classList.remove('text-gray-400', 'hover:text-gray-600');
+
+      if (copyTimeout) clearTimeout(copyTimeout);
+      copyTimeout = setTimeout(() => {
+        copyText.textContent = 'COPY';
+        copyIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />`;
+        copyBtn.classList.remove('text-green-600');
+        copyBtn.classList.add('text-gray-400', 'hover:text-gray-600');
+      }, 2000);
+    } catch (err) {
+      showErrorModal("無法複製內容：" + err.message, "複製失敗");
+    }
+  });
 });
