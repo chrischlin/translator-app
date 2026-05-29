@@ -79,7 +79,10 @@ ${glossaryInstruction}`;
       generationConfig: {
         temperature: 0,
         topK: 1,
-        topP: 0.1
+        topP: 0.1,
+        thinkingConfig: {
+          thinkingBudget: 0
+        }
       }
     };
 
