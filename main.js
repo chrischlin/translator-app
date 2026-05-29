@@ -233,10 +233,15 @@ document.addEventListener('DOMContentLoaded', () => {
   toneSelect.addEventListener('change', resetTranslationOutput);
 
   // Translation Logic
-  translateBtn.addEventListener('click', async () => {
+  let isTranslating = false;
+
+  const handleTranslate = async () => {
+    if (isTranslating) return;
+
     const text = chineseInput.value.trim();
     if (!text) return;
 
+    isTranslating = true;
     setButtonDisabled(translateBtn, true);
     setExportDisabled(true);
     translationOutput.innerHTML = `<span class="inline-flex items-center space-x-2 text-indigo-400">
@@ -274,9 +279,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       setExportDisabled(true);
     } finally {
+      isTranslating = false;
       checkInputState();
     }
-  });
+  };
+
+  translateBtn.removeEventListener('click', handleTranslate);
+  translateBtn.addEventListener('click', handleTranslate);
 
   // Export Logic
   const handleExport = () => {
