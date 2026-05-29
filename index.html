@@ -51,7 +51,8 @@
     </div>
 
     <!-- Row 2: Controls -->
-    <div class="flex justify-between items-center w-full">
+    <div class="flex justify-between items-center w-full flex-wrap gap-y-3">
+      <!-- Left Controls -->
       <div class="flex items-center space-x-4 flex-wrap gap-y-2">
         <div class="flex items-center space-x-2">
           <label for="tone-select"
@@ -70,12 +71,14 @@
           <input type="checkbox" id="transcript-mode-checkbox" class="accent-blue-900 hover:accent-blue-600 focus:ring-blue-900 h-4 w-4 transition-all cursor-pointer">
           <label for="transcript-mode-checkbox" class="text-sm font-medium text-gray-600 tracking-wide whitespace-nowrap cursor-pointer select-none" title="忽略句號">逐字稿模式</label>
         </div>
-
-        <button id="export-word-btn-mobile"
-          class="flex md:hidden px-4 sm:px-5 py-1.5 sm:py-2 rounded border border-gray-300 hover:bg-gray-100 text-sm font-medium tracking-wide btn-transition text-gray-700">
-          匯出 Word
-        </button>
       </div>
+
+      <!-- Right Controls: Export Button -->
+      <button id="export-word-btn-mobile"
+        class="flex md:hidden px-4 sm:px-5 py-1.5 sm:py-2 rounded border border-gray-300 hover:bg-gray-100 text-sm font-medium tracking-wide btn-transition text-gray-700 ml-auto">
+        匯出 Word
+      </button>
+    </div>
   </header>
 
   <!-- Main Content Area: Split Layout -->
