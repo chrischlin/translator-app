@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const chineseInput = document.getElementById('chinese-input');
   const translationOutput = document.getElementById('translation-output');
   const toneSelect = document.getElementById('tone-select');
+  const transcriptModeCheckbox = document.getElementById('transcript-mode-checkbox');
 
   const exportWordBtnDesktop = document.getElementById('export-word-btn-desktop');
   const exportWordBtnMobile = document.getElementById('export-word-btn-mobile');
@@ -201,6 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Button State Helpers
   const setButtonDisabled = (btn, disabled) => {
+    if (!btn) return; // 加入防呆機制：若 HTML 中找不到按鈕，不中斷程式執行
     btn.disabled = disabled;
     if (disabled) {
       btn.classList.add('opacity-50', 'cursor-not-allowed');
@@ -267,7 +269,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const tone = toneSelect.value;
-      const translated = await Api.translate(text, tone);
+      const isTranscriptMode = transcriptModeCheckbox ? transcriptModeCheckbox.checked : false;
+      const translated = await Api.translate(text, tone, isTranscriptMode);
 
       translationOutput.innerHTML = translated.replace(/\\n/g, '<br>');
       translationOutput.classList.remove('text-gray-300', 'italic');
@@ -314,27 +317,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Copy Logic
   let copyTimeout;
-  copyBtn.addEventListener('click', async () => {
-    const translated = translationOutput.innerText.trim();
-    if (!translated || translationOutput.classList.contains('italic')) return;
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      const translated = translationOutput.innerText.trim();
+      if (!translated || translationOutput.classList.contains('italic')) return;
 
-    try {
-      await navigator.clipboard.writeText(translated);
-      
-      copyText.textContent = 'COPIED';
-      copyIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />`;
-      copyBtn.classList.add('text-green-600');
-      copyBtn.classList.remove('text-gray-400', 'hover:text-gray-600');
+      try {
+        await navigator.clipboard.writeText(translated);
+        
+        copyText.textContent = 'COPIED';
+        copyIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />`;
+        copyBtn.classList.add('text-green-600');
+        copyBtn.classList.remove('text-gray-400', 'hover:text-gray-600');
 
-      if (copyTimeout) clearTimeout(copyTimeout);
-      copyTimeout = setTimeout(() => {
-        copyText.textContent = 'COPY';
-        copyIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />`;
-        copyBtn.classList.remove('text-green-600');
-        copyBtn.classList.add('text-gray-400', 'hover:text-gray-600');
-      }, 2000);
-    } catch (err) {
-      showErrorModal("無法複製內容：" + err.message, "複製失敗");
-    }
-  });
+        if (copyTimeout) clearTimeout(copyTimeout);
+        copyTimeout = setTimeout(() => {
+          copyText.textContent = 'COPY';
+          copyIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />`;
+          copyBtn.classList.remove('text-green-600');
+          copyBtn.classList.add('text-gray-400', 'hover:text-gray-600');
+        }, 2000);
+      } catch (err) {
+        showErrorModal("無法複製內容：" + err.message, "複製失敗");
+      }
+    });
+  }
 });

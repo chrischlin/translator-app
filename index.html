@@ -52,23 +52,30 @@
 
     <!-- Row 2: Controls -->
     <div class="flex justify-between items-center w-full">
-      <div class="flex items-center space-x-2">
-        <label for="tone-select" class="text-sm font-medium text-gray-600 tracking-wide whitespace-nowrap">風格選擇：</label>
-        <select id="tone-select"
-          class="bg-transparent border border-gray-300 rounded px-2 sm:px-3 py-1 text-sm text-gray-600 focus:outline-none focus:border-gray-500 btn-transition w-auto">
-          <option value="general" selected>一般</option>
-          <option value="book">書籍</option>
-          <option value="video">影片</option>
-          <option value="web">網頁</option>
-          <option value="mindful_card">心靈小卡</option>
-        </select>
-      </div>
+      <div class="flex items-center space-x-4 flex-wrap gap-y-2">
+        <div class="flex items-center space-x-2">
+          <label for="tone-select"
+            class="text-sm font-medium text-gray-600 tracking-wide whitespace-nowrap">風格選擇：</label>
+          <select id="tone-select"
+            class="bg-transparent border border-gray-300 rounded px-2 sm:px-3 py-1 text-sm text-gray-600 focus:outline-none focus:border-gray-500 btn-transition w-auto">
+            <option value="general" selected>一般</option>
+            <option value="book">書籍</option>
+            <option value="video">影片</option>
+            <option value="web">網頁</option>
+            <option value="mindful_card">心靈小卡</option>
+          </select>
+        </div>
+        <!-- 逐字稿模式 Checkbox -->
+        <div class="flex items-center space-x-2">
+          <input type="checkbox" id="transcript-mode-checkbox" class="accent-blue-900 hover:accent-blue-600 focus:ring-blue-900 h-4 w-4 transition-all cursor-pointer">
+          <label for="transcript-mode-checkbox" class="text-sm font-medium text-gray-600 tracking-wide whitespace-nowrap cursor-pointer select-none" title="忽略句號">逐字稿模式</label>
+        </div>
 
-      <button id="export-word-btn-mobile"
-        class="flex md:hidden px-4 sm:px-5 py-1.5 sm:py-2 rounded border border-gray-300 hover:bg-gray-100 text-sm font-medium tracking-wide btn-transition text-gray-700">
-        匯出 Word
-      </button>
-    </div>
+        <button id="export-word-btn-mobile"
+          class="flex md:hidden px-4 sm:px-5 py-1.5 sm:py-2 rounded border border-gray-300 hover:bg-gray-100 text-sm font-medium tracking-wide btn-transition text-gray-700">
+          匯出 Word
+        </button>
+      </div>
   </header>
 
   <!-- Main Content Area: Split Layout -->
@@ -92,12 +99,16 @@
     </section>
 
     <!-- Right/Bottom Column: English Translation Area -->
-     <section class="w-full md:w-1/2 h-1/2 md:h-full p-6 md:p-10 flex flex-col bg-white overflow-y-auto scrollbar-hide">
+    <section class="w-full md:w-1/2 h-1/2 md:h-full p-6 md:p-10 flex flex-col bg-white overflow-y-auto scrollbar-hide">
       <div class="mb-4 flex justify-between items-center text-xs font-bold tracking-widest text-gray-400 uppercase">
         <span>ENGLISH TRANSLATION</span>
-        <button id="copy-btn" class="flex items-center space-x-1 text-gray-400 hover:text-gray-600 btn-transition focus:outline-none" title="複製翻譯結果">
-          <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        <button id="copy-btn"
+          class="flex items-center space-x-1 text-gray-400 hover:text-gray-600 btn-transition focus:outline-none"
+          title="複製翻譯結果">
+          <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
           <span id="copy-text">COPY</span>
         </button>
