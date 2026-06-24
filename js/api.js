@@ -6,7 +6,7 @@ import {
 } from './glossary.js';
 
 
-const MODEL_NAME = "gemini-3.5-flash"; 
+const MODEL_NAME = "gemini-2.5-pro"; 
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent`;
 
 
