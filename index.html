@@ -102,8 +102,8 @@
     </section>
 
     <!-- Right/Bottom Column: English Translation Area -->
-    <section class="w-full md:w-1/2 h-1/2 md:h-full p-6 md:p-10 flex flex-col bg-white overflow-y-auto scrollbar-hide">
-      <div class="mb-4 flex justify-between items-center text-xs font-bold tracking-widest text-gray-400 uppercase">
+    <section class="w-full md:w-1/2 h-1/2 md:h-full p-6 md:p-10 flex flex-col bg-white">
+      <div class="mb-4 flex justify-between items-center text-xs font-bold tracking-widest text-gray-400 uppercase shrink-0">
         <span>ENGLISH TRANSLATION</span>
         <button id="copy-btn"
           class="flex items-center space-x-1 text-gray-400 hover:text-gray-600 btn-transition focus:outline-none"
@@ -117,7 +117,7 @@
         </button>
       </div>
       <div id="translation-output"
-        class="flex-1 w-full p-0 text-left text-lg md:text-xl leading-relaxed text-gray-800 font-light whitespace-pre-wrap outline-none"
+        class="flex-1 w-full p-0 text-left text-lg md:text-xl leading-relaxed text-gray-800 font-light whitespace-pre-wrap outline-none overflow-y-auto scrollbar-hide"
         contenteditable="false"><span class="text-gray-300">翻譯結果...</span>
       </div>
     </section>
