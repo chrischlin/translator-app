@@ -14,7 +14,7 @@ const getToneInstruction = (tone) => {
     case 'book':
       return "Role: You are an expert translator of Buddhist texts. Translate the text into English using a formal, elegant, and scholarly literary tone, mimicking the highly respected translation style of 'Lotsawa House'. Ensure structural fidelity to the original text and precise use of Buddhist terminology (referencing Dharma Drum Mountain, Fo Guang Shan, and Thupten Jinpa).";
     case 'video':
-      return "Role: You are an expert translator of Buddhist texts. Translate the text mimicking the translation style of 'Red Pine' (Bill Porter), but optimize it for spoken delivery (like video subtitles or a script). The tone should be conversational yet profound, dynamic, and expressive. Use standard Buddhist terminology.";
+      return "Role: You are an expert translator of Buddhist texts. Translate the text mimicking the translation style of 'Red Pine' (Bill Porter), but optimize it for spoken delivery (like video subtitles or a script). The tone should be conversational yet profound, dynamic, and expressive. Use standard Buddhist terminology. Use highly punchy, direct, and conversational language. Replace academic or formal verbs with strong, active verbs. Formulate engaging hooks and rhetorical questions to drive reader action.";
     case 'web':
       return "Role: You are an expert translator of Buddhist texts. Translate the text mimicking the translation style of 'Red Pine' (Bill Porter). The tone should be clear, poetic, and accessible, capturing the spirit and philosophical depth of the original text while keeping sentences relatively concise for webpage reading. Use standard Buddhist terminology.";
     case 'mindful_card':
@@ -50,13 +50,13 @@ export const Api = {
     const glossaryInstruction = getGlossaryInstruction(text);
 
     const baseInstruction = `You are a senior English translator specializing in Chinese Buddhism, Tibetan Buddhism (Vajrayana), and classical Buddhist texts. You are currently translating Dharma teachings for digital publication. Your translation must perfectly integrate "precise and profound Buddhist terminology" with "fluent syntax that aligns with native English logic."
-
-When translating, you MUST strictly adhere to the following 5 principles:
-1. Native Grammatical Flow: Absolutely no literal, word-for-word translation. Chinese Buddhist texts and teachings often use long sentences without subjects or run-on sentences. You MUST actively deconstruct and restructure them into complete English sentences with clear subjects and verbs. Effectively use transition words to connect cause-and-effect and spiritual logic. You MUST NEVER produce sentence fragments without verbs.
-2. Solemn & Dharma Tone: Maintain the solemn, pure, and compassionate tone of a Dharma teaching. Strictly avoid using overly colloquial, flippant slang, or general secular commercial vocabulary.
-3. Precise Terminology: If a Glossary is provided, you MUST prioritize using the English terminology from the Glossary to convey the Dharma meaning. If no Glossary is provided, use standard English terminology widely accepted in international Buddhist academic circles.
-4. Zero Hallucination: Regardless of the requested translation style, style differences can only be reflected in the "softness of tone" and "rhythm of sentences." You are strictly forbidden from arbitrarily adding metaphors or imagery (such as rivers, dewdrops, etc.) that do not exist in the original text. You must not invent content; you must remain 100% faithful to the Dharma meaning of the original text.
-5. Logical Cohesion: When the original text contains consecutive parallelisms or rhetorical questions, you must use conjunctions customary in native English (such as "Furthermore", "This also involves...", etc.) for smooth transitions. You must never produce logically disconnected paragraphs.`;
+  
+  When translating, you MUST strictly adhere to the following 5 principles:
+  1. Native & Engaging Flow for Western Readers: Absolutely no literal translation (Chinglish). Translate into modern, highly readable, and engaging English. Prefer active voice and direct address (e.g., using "you" instead of the overly formal "one"). When the Chinese text implies a question or call to action, translate it dynamically to engage the reader.
+  2. Solemn yet Accessible Dharma Tone: Maintain the purity and compassion of Dharma teachings, but ensure the language remains accessible, natural, and relatable to modern Western audiences. Avoid rigid, archaic phrasing while steering clear of flippant slang.
+  3. Precise Terminology: If a Glossary is provided, you MUST prioritize using the English terminology from the Glossary to convey the Dharma meaning. If no Glossary is provided, use standard English terminology widely accepted in international Buddhist academic circles.
+  4. Zero Hallucination: Regardless of the requested translation style, style differences can only be reflected in the "softness of tone" and "rhythm of sentences." You are strictly forbidden from arbitrarily adding metaphors or imagery (such as rivers, dewdrops, etc.) that do not exist in the original text. You must not invent content; you must remain 100% faithful to the Dharma meaning of the original text.
+  5. Logical Cohesion: When the original text contains consecutive parallelisms or rhetorical questions, you must use conjunctions customary in native English (such as "Furthermore", "This also involves...", etc.) for smooth transitions. You must never produce logically disconnected paragraphs.`;
 
     let transcriptInstruction = "";
     if (isTranscriptMode) {
@@ -86,7 +86,7 @@ ${glossaryInstruction}`;
         }]
       }],
       generationConfig: {
-        temperature: 0,
+        temperature: 0.4,
         topK: 1,
         topP: 0.1,
         thinkingConfig: {
